@@ -31,72 +31,105 @@
     </header>
     <div class="container">
       <div class= "row">
-        <div class = " time-block col" value= 9>9 AM</div>
+        <div class = "time-block col" value= "9">9 AM</div>
         <textarea class = "col-6"></textarea>
-        <button class = "col" id = "saveBtn"> <i class="fas fa-save 3x"></i></button>
+        <button class = "col" id = "saveBtn" onclick = "saveInfo()"> <i class="fas fa-save 3x"></i></button>
       </div>
       <div class= "row">
-        <div class = " time-block col" value= 10>10 AM</div>
+        <div class = "time-block col" value= "10">10 AM</div>
         <textarea class = "col-6"></textarea>
-        <button class = "col" id = "saveBtn"> <i class="fas fa-save 3x"></i></button>
+        <button class = "col" id = "saveBtn" onclick = "saveInfo()"> <i class="fas fa-save 3x"></i></button>
       </div>
       <div class= "row">
-        <div class = " time-block col" value= 11>11 AM</div>
+        <div class = "time-block col" value= "11">11 AM</div>
         <textarea class = "col-6"></textarea>
-        <button class = "col" id = "saveBtn"> <i class="fas fa-save 3x"></i></button>
+        <button class = "col" id = "saveBtn" onclick = "saveInfo()"> <i class="fas fa-save 3x"></i></button>
       </div>
       <div class= "row">
-        <div class = " time-block col" value= 12>NOON</div>
+        <div class = "time-block col" value= "12">NOON</div>
         <textarea class = "col-6"></textarea>
-        <button class = "col" id = "saveBtn"> <i class="fas fa-save 3x"></i></button>
+        <button class = "col" id = "saveBtn" onclick = "saveInfo()"> <i class="fas fa-save 3x"></i></button>
       </div>
       <div class= "row">
-        <div class = " time-block col" value= 13>1 PM</div>
+        <div class = "time-block col" value= "13">1 PM</div>
         <textarea class = "col-6"></textarea>
-        <button class = "col" id = "saveBtn"> <i class="fas fa-save 3x"></i></button>
+        <button class = "col" id = "saveBtn" onclick = "saveInfo()"> <i class="fas fa-save 3x"></i></button>
       </div>
       <div class= "row">
-        <div class = " time-block col" value= 14>2 PM</div>
+        <div class = "time-block col" value= "14">2 PM</div>
         <textarea class = "col-6"></textarea>
-        <button class = "col" id = "saveBtn"> <i class="fas fa-save 3x"></i></button>
+        <button class = "col" id = "saveBtn" onclick = "saveInfo()"> <i class="fas fa-save 3x"></i></button>
       </div>
       <div class= "row">
-        <div class = " time-block col" value= 15>3 PM</div>
+        <div class = "time-block col" value= "15">3 PM</div>
         <textarea class = "col-6"></textarea>
-        <button class = "col" id = "saveBtn"> <i class="fas fa-save 3x"></i></button>
+        <button class = "col" id = "saveBtn" onclick = "saveInfo()"> <i class="fas fa-save 3x"></i></button>
       </div>
       <div class= "row">
-        <div class = " time-block col" value= 16>4 PM</div>
+        <div class = "time-block col" value= "16">4 PM</div>
         <textarea class = "col-6"></textarea>
-        <button class = "col" id = "saveBtn"> <i class="fas fa-save 3x"></i></button>
+        <button class = "col" id = "saveBtn" onclick = "saveInfo()"> <i class="fas fa-save 3x"></i></button>
       </div>
       <div class= "row">
-        <div class = " time-block col" value= 17>5 PM</div>
+        <div class = "time-block col" value= "17">5 PM</div>
         <textarea class = "col-6"></textarea>
-        <button class = "col" id = "saveBtn"> <i class="fas fa-save 100x"></i></button>
+        <button class = "col" id = "saveBtn" onclick = "saveInfo()"> <i class="fas fa-save 100x"></i></button>
       </div>
 
     </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.0/moment.min.js"></script>
     <script>
-      var id = document.querySelector("textarea").value
+      //These variables were used to set the current date in the jumbotron
+      const now = moment().format('MMMM Do yy').toString()
+      var today = document.querySelector("#currentDay").textContent = `Today's date is ${now}`
 
-      function saveInfo(event){
-        event.preventDefault()
-        console.log(`value ${id}`)
-        console.log(event)
-        for(id=0;id<17;id++){
+      //=========================================//
+      
+      var H = parseInt(moment().format('H'))  //<-- shows current time
+      var text = document.querySelectorAll("textarea") //<-- represents all the textarea
+      var hrs = document.querySelectorAll(".time-block") //<-- represents all the timeblocks
+  
+      // this function is set to indicate wich block of time is the current and which ones are in the past and future.
+      // past, present and future are indicated by different classes, and the attributes for these class were set in css folder.
+      function hourIndicator(){
+        
+        for(i=0;i<hrs.length;i++){
           
-        if(event.target.matches("#saveBtn")){
-          var dayInfo = document.querySelector("textarea").textContent
+          if(parseInt(hrs[i].getAttribute("value")) > H){
+            text[i].classList.add("future")
+          }
+          if(parseInt(hrs[i].getAttribute("value")) < H){
+            text[i].classList.add("past")
+          }
+          if(parseInt(hrs[i].getAttribute("value")) === H){
+            text[i].classList.add("present")
+          }
         }
       }
 
-       
+      hourIndicator()
+      // once the save button is pressed this function usues local storage to store the activity with its coresponding time.
+      function saveInfo(){
+        for(i=0;i<hrs.length;i++){
+          localStorage.setItem(hrs[i].textContent, text[i].value)        
+        }
+      
       }
-      document.querySelector("#saveBtn").addEventListener('click', saveInfo)
+
+      displayInfo()
+      // this function pulls the information from the storage and displays it in the planner so that even if the page is reloaded the activities are still stored.
+      function displayInfo(){
+        for(i=0;i<hrs.length;i++){
+          var value = localStorage.getItem(hrs[i].textContent)
+
+          text[i].innerHTML += `${value}`
+        }
+      }
+
+      
     </script>
   </body>
 </html>

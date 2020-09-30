@@ -6,7 +6,6 @@ body {
 }
 
 textarea{
-  background: antiquewhite;
   resize: none;
   color: #000000;
   width:100%;
@@ -49,12 +48,12 @@ textarea{
 }
 
 .past {
-  background-color: #d3d3d3;
+  background-color: #df7676;
   color: white;
 }
 
 .present {
-  background-color: #ff6961;
+  background-color: antiquewhite;
   color: white;
 }
 
@@ -77,4 +76,8 @@ textarea{
   transition: all .3s ease-in-out;
 
 
+}
+
+#currentDay {
+color: antiquewhite;
 }
